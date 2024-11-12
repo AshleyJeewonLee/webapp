@@ -1,0 +1,51 @@
+.text {
+    color: red;
+}
+
+.leftPanel {
+    width: 50%;
+}
+
+.productRow {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 5%;
+}
+
+.rightPanel {
+    width: 50%;
+}
+
+.productDetails {
+    margin: 5%;
+}
+
+.optionImages {
+    display: flex;
+    height: 200px;
+}
+
+.imgOption {
+    margin: 20px;
+}
+
+.activeImgOption {
+    border: 3px solid skyblue;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 20px 100px;
+    background-color: black;
+    color: #fff;
+    font-family:Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: skyblue;
+}

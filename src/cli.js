@@ -25,7 +25,7 @@ async function parseKeywords(img) {
 // Create an instance of the Application and Router classes
 
 app.use(async (ctx, next) => {
-    ctx.response.headers.set("Access-Control-Allow-Origin", "http://127.0.0.1:5501")
+    ctx.response.headers.set("Access-Control-Allow-Origin", "https://ashleyjeewo-webapp-66.deno.dev")
     ctx.response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
     ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type")
 

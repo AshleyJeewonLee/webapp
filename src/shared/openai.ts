@@ -53,17 +53,35 @@ export type OpenAIImageContent = {
     }
   }[]
 }
+
+export type OpenAIChatMessage = {
+  role: 'system' | 'user' | 'assistant',
+  content: string | OpenAIImageContent['content']
+}
+
 export async function promptGPT(
-  prompt: string | OpenAIImageContent,
+  prompt: string,
   systemPrompt?: string,
   params: Partial<OpenAIChatParams> = {},
   options: Partial<SpinnerOptions> = {},
 ): Promise<string> {
-  params.messages = [{ role: "user", content: prompt }];
+  params.messages = [{ role: "user", content: [{
+    "type": "image_url",
+    "image_url": {
+        "url": prompt,
+    }
+  }] }]
+
   if (systemPrompt) {
-    params.messages = params.messages.push({role: "system", content: systemPrompt})
+    params.messages.push({
+      role: 'system',
+      content: systemPrompt
+    });
   }
+
+  
   const message = await gpt(params, options);
+  console.log(message)
   if (params.response_format?.type === "json_schema") {
     return message.parsed;
   } else {

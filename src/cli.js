@@ -8,18 +8,11 @@ const app = new Application()
 const router = new Router()
 
 async function parseKeywords(img) {    
- 
+    console.log(img)
     try {
-        const completion = await promptGPT([{content: [
-        {
-            type: "image_url",
-            image_url: {
-            url: img,
-            }
-        }
-        ]}], "You are helpful assistant that analyzes the keywords associated with provided image of clothing. Return bullet points of its key features")
+        const completion = await promptGPT(img, "You are helpful assistant that analyzes the keywords associated with provided image of clothing. Return bullet points of its key features")
         
-        const response = JSON.parse(completion)
+        const response = completion
         return response
     } catch (e) {
         console.error(`Failed to process image ${img}: ${e.message}`);
@@ -32,7 +25,7 @@ async function parseKeywords(img) {
 // Create an instance of the Application and Router classes
 
 app.use(async (ctx, next) => {
-    ctx.response.headers.set("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
+    ctx.response.headers.set("Access-Control-Allow-Origin", "http://127.0.0.1:5501")
     ctx.response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
     ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type")
 

@@ -24,19 +24,19 @@ async function parseKeywords(img) {
 
 // Create an instance of the Application and Router classes
 
-app.use(async (ctx, next) => {
-    ctx.response.headers.set("Access-Control-Allow-Origin", "https://ashleyjeewo-webapp-66.deno.dev")
-    ctx.response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-    ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type")
+// app.use(async (ctx, next) => {
+//     ctx.response.headers.set("https://ashleyjeewo-webapp-95-a75f0e0yq60g.deno.dev/")
+//     ctx.response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+//     ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type")
 
-    // Handle preflight requests
-    if (ctx.request.method === "OPTIONS") {
-        ctx.response.status = 200
-        return
-    }
+//     // Handle preflight requests
+//     if (ctx.request.method === "OPTIONS") {
+//         ctx.response.status = 200
+//         return
+//     }
 
-    await next()
-})
+//     await next()
+// })
 
 router.post("/api/picture", async (ctx) => {
     console.log("Requested picture generate")

@@ -14,28 +14,33 @@ async function parseKeywords(url) {
         const html = await response.text()
         const parser = new DOMParser()
         const doc = parser.parseFromString(html, 'text/html')
-        const images = Array.from(doc.images)
-        console.log(images)
-        let largestImage = null
-        if (images.length){
-            let maxArea = 0
-            for (const img of images) {
-                const width = parseInt(img.width) || parseInt(img.getAttribute('width'))
-                const height = parseInt(img.height) || parseInt(img.getAttribute('height'))
-                if (width && height) {
-                    const area = width * height
-                    if (maxArea < area) {
-                        maxArea = area
-                        largestImage = img.src
-                    }
-                }
+        const images = doc.querySelectorAll('img');
+        
+        // Convert NodeList to Array and get src attributes
+        const imageUrls = Array.from(images).map(img => img.getAttribute('src'));
+        const desc = []
+        if (imageUrls.length) {
+            try {
+                await Promise.all(
+                    imageUrls.map(async (img) => {
+                        try {
+                            const completion = await promptGPT(img, "You are helpful assistant that analyzes the keywords associated with provided image of clothing. Return bullet points of its key features");
+                            if (completion) {  // Check if completion exists
+                                desc.push(completion);
+                            }
+                        } catch (error) {
+                            console.error(`Error processing image ${img}:`, error);
+                            // Optionally push an error placeholder
+                            // desc.push('Image analysis failed');
+                        }
+                    })
+                );
+            } catch (error) {
+                console.error('Error in Promise.all:', error);
             }
         }
-        if (largestImage){
-            const completion = await promptGPT(largestImage, "You are helpful assistant that analyzes the keywords associated with provided image of clothing. Return bullet points of its key features")
-            const completionRes = completion
-            return completionRes
-        }
+        
+        return desc.filter(Boolean).join(' , ');
     } catch (e) {
         console.error(`Failed to process image ${url}: ${e.message}`);
         return "No error shown"

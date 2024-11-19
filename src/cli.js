@@ -99,4 +99,4 @@ app.use(router.allowedMethods())
 app.use(staticServer)
 
 // Everything is set up, let's start the server
-await app.listen({ port: 5501, signal: createExitSignal() })
+await app.listen({ port: 8000, signal: createExitSignal() })

@@ -7,13 +7,33 @@ import { createExitSignal, staticServer } from "./shared/server.ts"
 const app = new Application()
 const router = new Router()
 
-async function parseKeywords(img) {    
-    console.log(img)
+async function parseKeywords(url) {    
     try {
-        const completion = await promptGPT(img, "You are helpful assistant that analyzes the keywords associated with provided image of clothing. Return bullet points of its key features")
-        
-        const response = completion
-        return response
+        const response = await fetch(url)
+        const html = await response.text()
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(html, 'text/html')
+        const images = Array.from(doc.images)
+        let largestImage = null
+        if (images.length){
+            let maxArea = 0
+            for (const img of images) {
+                const width = parseInt(img.width) || parseInt(img.getAttribute('width'))
+                const height = parseInt(img.height) || parseInt(img.getAttribute('height'))
+                if (width && height) {
+                    const area = width * height
+                    if (maxArea < area) {
+                        maxArea = area
+                        largestImage = img.src
+                    }
+                }
+            }
+        }
+        if (largestImage){
+            const completion = await promptGPT(largestImage, "You are helpful assistant that analyzes the keywords associated with provided image of clothing. Return bullet points of its key features")
+            const completionRes = completion
+            return response
+        }
     } catch (e) {
         console.error(`Failed to process image ${img}: ${e.message}`);
         return "No error shown"
@@ -79,5 +99,4 @@ app.use(router.allowedMethods())
 app.use(staticServer)
 
 // Everything is set up, let's start the server
-console.log("\nListening on http://localhost:8000")
-await app.listen({ port: 8000, signal: createExitSignal() })
+await app.listen({ port: 5501, signal: createExitSignal() })

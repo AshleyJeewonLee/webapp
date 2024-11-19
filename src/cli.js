@@ -14,6 +14,7 @@ async function parseKeywords(url) {
         const parser = new DOMParser()
         const doc = parser.parseFromString(html, 'text/html')
         const images = Array.from(doc.images)
+        console.log(images)
         let largestImage = null
         if (images.length){
             let maxArea = 0
@@ -32,10 +33,10 @@ async function parseKeywords(url) {
         if (largestImage){
             const completion = await promptGPT(largestImage, "You are helpful assistant that analyzes the keywords associated with provided image of clothing. Return bullet points of its key features")
             const completionRes = completion
-            return response
+            return completionRes
         }
     } catch (e) {
-        console.error(`Failed to process image ${img}: ${e.message}`);
+        console.error(`Failed to process image ${url}: ${e.message}`);
         return "No error shown"
     }
 }

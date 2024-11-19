@@ -25,8 +25,8 @@ async function parseKeywords(url) {
                     imageUrls.map(async (img) => {
                         try {
                             const completion = await promptGPT(img, "You are helpful assistant that analyzes the keywords associated with provided image of clothing. Return bullet points of its key features");
-                            if (completion) {  // Check if completion exists
-                                desc.push(completion);
+                            if (completion && completion['content']) {  
+                                desc.push(completion['content']);
                             }
                         } catch (error) {
                             console.error(`Error processing image ${img}:`, error);

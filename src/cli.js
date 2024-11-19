@@ -4,6 +4,7 @@ import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts"
 
 // Import the createExitSignal function from the JS+OAI shared library
 import { createExitSignal, staticServer } from "./shared/server.ts"
+import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 const app = new Application()
 const router = new Router()
 

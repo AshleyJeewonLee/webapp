@@ -117,6 +117,6 @@ router.post("/api/picture", async (ctx) => {
 app.use(router.routes())
 app.use(router.allowedMethods())
 app.use(staticServer)
-
+console.log("Listening on Port 8000")
 // Everything is set up, let's start the server
 await app.listen({ port: 8000, signal: createExitSignal() })

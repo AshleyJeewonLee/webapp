@@ -75,7 +75,7 @@ async function generatePicture(data) {
   console.log('Generating res with data:', data)
 
   // Simulate delay
-  const response = await fetch("http://localhost:8000/api/picture", {
+  const response = await fetch("/api/picture", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

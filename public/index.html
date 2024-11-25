@@ -8,24 +8,34 @@
   </head>
 
   <body>
-    <div class="productRow">
-      <div class="leftPanel">
-        <form id="userForm">
-          <input
-            type="text"
-            id="name"
-            name="theme"
-            class="theme-input"
-            required
-          />
-          <button type="submitUserForm" class="submit-button" id="submitButton">
-            Generate a analysis!
-          </button>
-        </form>
+    <div class="container">
+      <header>
+        <h1>Fashion Analysis Tool</h1>
+        <p>Analyze clothing images with AI</p>
+      </header>
+
+      <div class="input-section">
+        <div class="input-card">
+          <form id="userForm" class="search-form">
+            <div class="input-group">
+              <input
+                type="text"
+                id="name"
+                name="theme"
+                class="theme-input"
+                placeholder="Enter image URL here..."
+                required
+              />
+              <button type="submit" class="submit-button" id="submitButton">
+                Analyze
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-      <div class="rightPanel">
-        
-        <div id="response-container"></div>
+
+      <div class="results-section">
+        <div id="response-container" class="response-grid"></div>
       </div>
     </div>
     <script src="./main.js"></script>

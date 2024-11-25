@@ -81,7 +81,6 @@ export async function promptGPT(
 
   
   const message = await gpt(params, options);
-  console.log(message)
   if (params.response_format?.type === "json_schema") {
     return message.parsed;
   } else {

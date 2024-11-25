@@ -19,7 +19,6 @@ form.addEventListener('submit', async function (e) {
     button.disabled = true
 
     const recommendations = await generatePicture(formData)
-    console.log(recommendations)
     renderResponse(recommendations.response)
     // Reset button state
     button.textContent = originalText
@@ -35,9 +34,40 @@ form.addEventListener('submit', async function (e) {
   }
 })
 
+/**
+ * Renders a response into a container element
+ * @param {{
+*   img: string,
+*   response: Record<'color'|'pattern'|'style'|'material'|'occasion'|'fit'|'details'|'season', string>
+* }[]} res - Array of image and analysis response pairs
+* @returns {void}
+*/
 function renderResponse(res){
-  const container = document.getElementById('response-container')
-  container.innerHTML = res 
+  const container = document.getElementById('response-container');
+  if (res.length) {
+    const html = res.map(item => `
+      <div class="analysis-card">
+        <img src="${item.img}" alt="Analyzed clothing" class="image-preview">
+        <div class="analysis-details">
+          ${Object.entries(item.response).map(([key, values]) => `
+            <div class="detail-item">
+              <span class="detail-label">${key.charAt(0).toUpperCase() + key.slice(1)}</span>
+              <div class="tag-list">
+                ${values}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+  
+    container.innerHTML = html;
+  } else {
+    const html = `
+    <div class="error-card">Error parsing...Try another website!</div>
+    `
+    container.innerHTML = html;
+  }
 }
 
 async function generatePicture(data) {
@@ -45,7 +75,7 @@ async function generatePicture(data) {
   console.log('Generating res with data:', data)
 
   // Simulate delay
-  const response = await fetch("/api/picture", {
+  const response = await fetch("http://localhost:8000/api/picture", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -58,7 +88,7 @@ async function generatePicture(data) {
   }
   const recs = await response.json()
   const processedRecs = recs['data']
-
+  
   return {
     success: true,
     response: processedRecs
